@@ -1,0 +1,12 @@
+.card-flip {
+  .swiper {
+    width: 360px;
+
+    &__slide {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      border-radius: 18px;
+    }
+  }
+}
