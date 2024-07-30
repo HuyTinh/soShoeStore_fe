@@ -11,7 +11,6 @@ const CartItem = ({ cart }) => {
         setIsProcess(true)
         setTimeout(() => {
             dispatch(updateFromCart({ cartId: user.id, cart: { ...cart, quantity: 0 } }))
-            setIsProcess(false)
         }, 500)
     }
 
