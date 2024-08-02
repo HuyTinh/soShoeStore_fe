@@ -14,8 +14,8 @@ const AddressBookForm = () => {
         defaultValues: {
             phone_number: user.phone_number,
             street_number: user.address?.split(',')[0],
-            province: user.address?.split(',')[1],
-            district_or_town: user.address?.split(',')[2],
+            province: user.address?.split(',')[2],
+            district_or_town: user.address?.split(',')[1],
         }
     });
 

@@ -89,12 +89,12 @@ const OrderHistory = () => {
                                             <div className='mb-3 flex *:flex-1'>
                                                 <div className='space-x-2'>
                                                     <span>+ First Name: </span>
-                                                    <span className='font-bold text-xl'>{`${orderDetail?.firstname}`}</span>
+                                                    <span className='font-bold text-xl'>{`${orderDetail?.first_name}`}</span>
                                                 </div>
                                                 <div className='space-x-2'>
                                                     <span>+ Last Name:</span>
                                                     <span className='font-bold text-xl'>
-                                                        {orderDetail?.lastname}
+                                                        {orderDetail?.last_name}
                                                     </span>
                                                 </div>
                                                 <div>
