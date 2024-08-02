@@ -7,11 +7,11 @@ const CartItem = ({ cart }) => {
     const [isProcess, setIsProcess] = useState(false);
     const { user } = useSelector(state => state.users)
 
+
     const handleRemove = () => {
         setIsProcess(true)
         setTimeout(() => {
-            dispatch(updateFromCart({ cartId: user.id, cart: { ...cart, quantity: 0 } }))
-            setIsProcess(false)
+            dispatch(updateFromCart({ data: { cartId: user.id, cart: { ...cart, quantity: 0 } }, setIsProcess: setIsProcess }))
         }, 500)
     }
 

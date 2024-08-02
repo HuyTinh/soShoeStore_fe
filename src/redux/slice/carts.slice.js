@@ -25,7 +25,8 @@ export const addToCart = createAsyncThunk('carts/addToCart', async (data, thunkA
 })
 
 export const updateFromCart = createAsyncThunk("carts/updateFromCart", async (data, thunkAPI) => {
-    return await CartApi.updateFromCart(data, thunkAPI);
+    return await CartApi.updateFromCart(data.data, thunkAPI);
+    data.setIsProcess(false);
 })
 
 
