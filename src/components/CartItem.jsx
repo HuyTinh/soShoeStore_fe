@@ -16,7 +16,8 @@ const CartItem = ({ cart }) => {
     }
 
     const handleChange = (event) => {
-        dispatch(updateFromCart({ cartId: user.id, cart: { ...cart, quantity: parseInt(event.target.value) } }))
+        dispatch(updateFromCart(
+            { data: { cartId: user.id, cart: { ...cart, quantity: parseInt(event.target.value) } } }))
     }
 
     return (
