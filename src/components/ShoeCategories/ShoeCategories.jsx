@@ -5,9 +5,8 @@ import { Navigation } from 'swiper/modules';
 import { motion } from 'framer-motion';
 import './ShoeCategories.scss'
 import ShoeApi from '../../api/services/shoeApi';
-import { useDispatch } from 'react-redux';
-import { getShoeFilterList } from '../../redux/slice/filter.slice';
 import { useNavigate } from 'react-router-dom';
+
 const ShoeCategories = () => {
     const navigate = useNavigate();
 
@@ -68,16 +67,6 @@ const ShoeCategories = () => {
                         </SwiperSlide>
                     )
                 }
-
-                {/* <SwiperSlide>Slide 1</SwiperSlide>
-                <SwiperSlide>Slide 2</SwiperSlide>
-                <SwiperSlide>Slide 3</SwiperSlide>
-                <SwiperSlide>Slide 4</SwiperSlide>
-                <SwiperSlide>Slide 5</SwiperSlide>
-                <SwiperSlide>Slide 6</SwiperSlide>
-                <SwiperSlide>Slide 7</SwiperSlide>
-                <SwiperSlide>Slide 8</SwiperSlide>
-                <SwiperSlide>Slide 9</SwiperSlide> */}
             </Swiper>
         </motion.section>
     );
