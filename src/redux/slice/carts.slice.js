@@ -21,7 +21,7 @@ export const getCartList = createAsyncThunk('carts/getCarts', async (cartId, thu
 })
 
 export const addToCart = createAsyncThunk('carts/addToCart', async (data, thunkAPI) => {
-    return await CartApi.addToCart(data, thunkAPI);;
+    return await CartApi.addToCart(data, thunkAPI);
 })
 
 export const updateFromCart = createAsyncThunk("carts/updateFromCart", async (data, thunkAPI) => {
