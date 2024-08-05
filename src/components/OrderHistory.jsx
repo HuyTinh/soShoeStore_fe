@@ -27,8 +27,6 @@ const OrderHistory = () => {
     }
 
 
-    console.log(orders);
-
     return (
         <div>
             <div className="py-10 px-12 lg:px-24 xl:px-48">

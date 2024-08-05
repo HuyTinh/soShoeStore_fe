@@ -1,17 +1,24 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useForm } from 'react-hook-form';
 import { FaRegTimesCircle } from 'react-icons/fa';
 import Swal from 'sweetalert2';
 import './CheckOutForm.scss';
 import withReactContent from 'sweetalert2-react-content';
 import { useDispatch, useSelector } from 'react-redux';
-import { createOrder } from '../../redux/slice/orders.slice';
+import { createOrder, initOrder } from '../../redux/slice/orders.slice';
+import PaymentMethod from '../PaymentMethod.jsx/PaymentMethod';
+import PaymentApi from '../../api/services/paymentApi';
+import { useParams, useSearchParams } from 'react-router-dom';
+import OrderApi from '../../api/services/orderApi';
+import { clearCart } from '../../redux/slice/carts.slice';
 
 
 const CheckOutForm = ({ props }) => {
     const { totalPrice, carts } = props;
     const dispatch = useDispatch();
     const { user } = useSelector(state => state.users);
+    const paymentMethod = useRef("COD")
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const {
         register,
@@ -22,24 +29,56 @@ const CheckOutForm = ({ props }) => {
         mode: "all",
     });
 
+    useEffect(() => {
+        if (searchParams.get("paid")) {
+            (async () => {
+                await OrderApi.commitQueueOrder(user.id).then(() => {
+                    dispatch(clearCart(user.id))
+                })
+            })()
+        }
+    }, [])
+
     const onSubmit = (data) => {
-        dispatch(createOrder(
-            {
-                order: {
-                    user_id: user.id,
-                    email: data.email,
-                    phone_number: data.phone_number,
-                    firstname: data.first_name,
-                    lastname: data.last_name,
-                    address: data.street_number + ' ' + data.district_or_town + ' ' + data.province,
-                    shipping_method: "express",
-                    payment_method: "cod",
-                    total_money: totalPrice
-                },
-                cart: carts
-            }
-        ))
-        showSwal()
+        if (paymentMethod.current === "COD") {
+            dispatch(createOrder(
+                {
+                    order: {
+                        user_id: user.id,
+                        email: data.email,
+                        phone_number: data.phone_number,
+                        firstname: data.first_name,
+                        lastname: data.last_name,
+                        shipping_address: data.street_number + ', ' + data.district_or_town + ', ' + data.province,
+                        address: user.address,
+                        shipping_method: "express",
+                        payment_method: paymentMethod.current,
+                        total_money: totalPrice
+                    },
+                    cart: carts
+                }
+            ))
+            showSwal()
+        } else {
+            (async () => {
+                window.location.href = await PaymentApi.payment({
+                    payment_method: paymentMethod.current,
+                    amount: totalPrice,
+                    order: {
+                        user_id: user.id,
+                        email: data.email,
+                        phone_number: data.phone_number,
+                        firstname: data.first_name,
+                        lastname: data.last_name,
+                        shipping_address: data.street_number + ', ' + data.district_or_town + ', ' + data.province,
+                        address: user.address,
+                        shipping_method: "express",
+                        payment_method: paymentMethod.current,
+                        total_money: totalPrice
+                    }
+                })
+            })()
+        }
     }
 
     const showSwal = () => {
@@ -265,13 +304,20 @@ const CheckOutForm = ({ props }) => {
                             {errors.district_or_town && <p className='error_badges'><FaRegTimesCircle className="inline mb-1 mr-1" />{errors.district_or_town.message}</p>}
                         </div>
                     </div>
-                    <div>
-                        {/* <Link to={'/shoes'}> */}
-                        <button className="btn font-bold text-2xl rounded-none uppercase" type="submit">CheckOut</button>
-                        {/* </Link> */}
-                    </div>
-                </div>
 
+                </div>
+            </div>
+            <div className="divider"></div>
+            <div className="mb-5 space-y-2">
+                <div className="flex flex-col font-extrabold text-2xl mb-5">
+                    <h2 className="uppercase">payment</h2>
+                </div>
+                <PaymentMethod props={{ paymentMethod }} />
+                <div>
+                    {/* <Link to={'/shoes'}> */}
+                    <button className="btn font-bold text-2xl rounded-none uppercase" type="submit">CheckOut</button>
+                    {/* </Link> */}
+                </div>
             </div>
         </form>
     )

@@ -5,6 +5,7 @@ import OrderDetailApi from "../../api/services/orderDetailApi";
 
 const initialState = {
     orders: [],
+    order: {},
     pageable: {
         pageNumber: 0,
         totalPages: 0,
@@ -47,6 +48,11 @@ export const getOrderByUserId = createAsyncThunk('orders/getOrderList', async (u
 const ordersSlice = createSlice({
     name: "orders",
     initialState,
+    reducers: {
+        initOrder: (state, action) => {
+            state.order = action.payload
+        }
+    },
     extraReducers: builder => {
         builder.addCase(createOrder.fulfilled, (state) => {
             state.isLoading = false;
@@ -67,5 +73,7 @@ const ordersSlice = createSlice({
         })
     }
 })
+
+export const { initOrder } = ordersSlice.actions;
 
 export default ordersSlice.reducer;

@@ -1,3 +1,4 @@
+import { clearCart } from "../../redux/slice/carts.slice";
 import axiosClient from "../axiosClient"
 
 const OrderApi = {
@@ -6,6 +7,10 @@ const OrderApi = {
         return await axiosClient.post("/orders", createRequest.newOrder, {
             signal: thunkAPI.signal
         });
+    },
+    commitQueueOrder: async (userId, thunkAPI) => {
+        const response = await axiosClient.get(`/orders/commit-queue-order/${userId}`);
+        return response;
     },
 
     updateOrder: async (updateRequest, thunkAPI) => {
